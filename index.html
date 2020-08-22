@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="    https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .finished {
+            text-decoration: line-through;
+        }
+    </style>
+    <title>Todo app</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar bg-dark">
+            <div class="container">
+                <h3 class="navbar text-light">RaldWeb</h3>
+            </div>
+        </nav>
+    </header>
+    <div id="myapp" class="container mt-3">
+        <div class="col-md-6 m-auto">
+            <form class="form-inline" @submit.prevent="addTodo">
+                <input type="text" id="newTodo" v-model="mytodo" class="form-control col mr-1" placeholder="todo">
+                <button type="submit" class="btn btn-info ">Add</button>
+            </form>
+        </div>
+        <br>
+        <div class="col-md-6 m-auto">
+            <button class="btn " @click="alldone"><input type="checkbox"> All Done</button>
+            <ul style="list-style-type: none;">
+                <li v-for="todo in todos" class="d-flex">
+                    <input type="checkbox" v-model="todo.done" class="mt-2 mr-1">
+                    <span :class="{ finished: todo.done}">{{todo.title}}</span>
+                    <i class="fa fa-trash mt-1 ml-1 text-danger" @click="removeTodo(todo)"></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script src="./bootstrap/bootstrap.min.js"></script>
+<script src="./vue.js"></script>
+<script>
+    const myvueapp = new Vue({
+        el: "#myapp",
+        data: {
+            mytodo: "",
+            todos: []
+        },
+        methods: {
+            addTodo() {
+                if (this.mytodo != "") {
+                    this.todos.push({
+                        title: this.mytodo,
+                        done: false
+                    })
+                    this.mytodo = ""
+                } else {
+                    alert("my friend type something before submitting else i will slap the hell outa you")
+                }
+            },
+            removeTodo(todo) {
+                const todoindex = this.todos.indexOf(todo)
+                this.todos.splice(todoindex, 1)
+            },
+            alldone() {
+                this.todos.forEach(todo => {
+                    if (todo.done == false) {
+                        todo.done = true
+                    } else {
+                        todo.done = false;
+                    }
+                })
+            }
+        }
+    })
+</script>
+
+</html>
